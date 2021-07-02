@@ -1,4 +1,7 @@
 import { app, BrowserWindow, ipcMain } from 'electron'
+import { runMigrations } from '../api/infra/migrations'
+
+
 
 let mainWindow: BrowserWindow | null
 
@@ -10,7 +13,7 @@ declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string
 //     ? process.resourcesPath
 //     : app.getAppPath()
 
-function createWindow () {
+async function createWindow () {
   mainWindow = new BrowserWindow({
     // icon: path.join(assetsPath, 'assets', 'icon.png'),
     width: 1100,
@@ -22,6 +25,8 @@ function createWindow () {
       preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY
     }
   })
+
+  await runMigrations()
 
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY)
 
@@ -50,8 +55,9 @@ app.on('window-all-closed', () => {
   }
 })
 
-app.on('activate', () => {
+app.on('activate', async () => {
+  if (require('electron-squirrel-startup')) return app.quit();
   if (BrowserWindow.getAllWindows().length === 0) {
-    createWindow()
+    await createWindow()
   }
 })
