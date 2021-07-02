@@ -1,13 +1,9 @@
-import { createConnection, SimpleConsoleLogger } from 'typeorm'
+import { createConnection } from 'typeorm'
 import migrations from './migrations'
-import { resolve } from 'path'
+import { typeormconfig } from '../../config/typeormconfig'
 
 export const runMigrations = async (): Promise<void> => {
-  const connection = await createConnection({
-    type: "better-sqlite3",
-    database: resolve(__dirname, "dacco.db"),
-    synchronize: false
-  })
+  const connection = await createConnection(typeormconfig)
 
   const queryRunner = connection.createQueryRunner()
 

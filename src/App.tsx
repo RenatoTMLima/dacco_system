@@ -1,12 +1,12 @@
 import { GlobalStyle } from './styles/GlobalStyle'
 
-import { Greetings } from './components/Greetings'
+import { MainPage } from './components/MainPage'
 
 export function App() {
   return (
     <>
       <GlobalStyle />
-      <Greetings />
+      <MainPage />
     </>
   )
 }

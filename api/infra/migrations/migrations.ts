@@ -39,7 +39,9 @@ const migrations: IMigration = {
       idProduto INTEGER NOT NULL,
       nomePeca TEXT NOT NULL,
       quantidade INTEGER NOT NULL,
-      valor REAL NOT NULL
+      valor REAL NOT NULL,
+      FOREIGN KEY (idProduto) 
+        REFERENCES invoice (id) 
     );`)
   },
 }

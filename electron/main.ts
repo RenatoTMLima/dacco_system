@@ -1,7 +1,8 @@
-import { app, BrowserWindow, ipcMain } from 'electron'
+import 'reflect-metadata'
+import { app, BrowserWindow } from 'electron'
 import { runMigrations } from '../api/infra/migrations'
-
-
+import { registerListeners } from '../api/server'
+import path from 'path'
 
 let mainWindow: BrowserWindow | null
 
@@ -15,10 +16,9 @@ declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string
 
 async function createWindow () {
   mainWindow = new BrowserWindow({
-    // icon: path.join(assetsPath, 'assets', 'icon.png'),
+    icon: path.join(__dirname, 'assets', 'logo.png'),
     width: 1100,
     height: 700,
-    backgroundColor: '#191622',
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
@@ -32,15 +32,6 @@ async function createWindow () {
 
   mainWindow.on('closed', () => {
     mainWindow = null
-  })
-}
-
-async function registerListeners () {
-  /**
-   * This comes from bridge integration, check bridge.ts
-   */
-  ipcMain.on('message', (_, message) => {
-    console.log(message)
   })
 }
 
